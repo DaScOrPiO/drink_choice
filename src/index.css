@@ -1,3 +1,63 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Inconsolata:wght@200;500;700&display=swap');
+
+* {
+    font-family: 'Inconsolata', monospace;
+    font-size: 18px;
+}
+
+.empty-container-bg {
+    background: url('./assets/Man.svg') center/cover #ffffffb7;
+}
+
+.main-container {
+    background: url('./assets/city-art.jpg') center/cover;
+}
+
+.input, .input-2 {
+    width: 80%;
+    outline: none;
+    margin: 6% 0;
+    padding: 0.8% 0.2%;
+    border-radius: 1.5rem;
+}
+
+.input-2{
+    width: 40%;
+    padding: 0.4%;
+}
+.selct{
+    width: 20%;
+    padding: 0.4% 0.2%;
+    border-radius: 0.4rem;
+    outline: none;
+}
+
+.selct .opt{
+    width: 20%;
+    padding: 0;
+}
+
+.radial-text{
+    background: linear-gradient(147deg, #ebebeb 40%, #967306 100%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.header-gradient {
+    background: linear-gradient(147deg, #ebebeb 60%, #967306 100%);
+}
+
+.user-pagebg{
+    background: #ebebeb;
+}
+
+@media screen and (max-width: 1023px) {
+    .empty-container-bg {
+        display: none;
+    }
+}

@@ -2,10 +2,10 @@ import React from "react";
 
 export default function Signup() {
   return (
-    <div>
-      <input type="text" placeholder="name" />
-      <input type="email" name="" id="" placeholder="E-mail" />
-      <input type="password" placeholder="Password" />
+    <div className="flex flex-col">
+      <input type="text" placeholder="name" className="input" />
+      <input type="email" name="" id="" placeholder="E-mail" className="input" />
+      <input type="password" placeholder="Password" className="input" />
     </div>
   );
 }
