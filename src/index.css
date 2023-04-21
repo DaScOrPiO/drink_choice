@@ -17,7 +17,7 @@
     background: url('./assets/city-art.jpg') center/cover;
 }
 
-.input, .input-2 {
+.input, .input-2, .input-1 {
     width: 80%;
     outline: none;
     margin: 6% 0;
@@ -25,23 +25,28 @@
     border-radius: 1.5rem;
 }
 
-.input-2{
+.input-2 {
     width: 40%;
     padding: 0.4%;
 }
-.selct{
+
+.input-1 {
+    margin: 4% 0;
+}
+
+.selct {
     width: 20%;
     padding: 0.4% 0.2%;
     border-radius: 0.4rem;
     outline: none;
 }
 
-.selct .opt{
+.selct .opt {
     width: 20%;
     padding: 0;
 }
 
-.radial-text{
+.radial-text {
     background: linear-gradient(147deg, #ebebeb 40%, #967306 100%);
     background-clip: text;
     -webkit-background-clip: text;
@@ -52,7 +57,7 @@
     background: linear-gradient(147deg, #ebebeb 60%, #967306 100%);
 }
 
-.user-pagebg{
+.user-pagebg {
     background: #ebebeb;
 }
 
@@ -60,4 +65,18 @@
     .empty-container-bg {
         display: none;
     }
+}
+
+
+/* Loading Animation */
+.loader {
+    margin: 0 0 2em;
+    height: 100px;
+    width: 20%;
+    text-align: center;
+    padding: 1em;
+    margin: 0 auto 1em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
