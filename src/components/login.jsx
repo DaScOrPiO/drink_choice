@@ -1,12 +1,24 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import Button from "./button";
 import { useNavigate, Link } from "react-router-dom";
+import { GiCheckMark } from "react-icons/gi";
+import { CgSmileSad } from "react-icons/cg";
+import { AiOutlineClose } from "react-icons/ai";
 
 export default function Login({ renderState, changeRenderState }) {
   const [inputLogin, setInputLogin] = useState({
     username: "",
     password: "",
   });
+
+  const [login, setLogin] = useState(false);
+  const closeErrorDiv = () => {
+    setLogin(!login);
+  };
+
+  //Refrence input fiels
+  const iconRef1 = useRef(),
+    iconRef2 = useRef();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -33,22 +45,56 @@ export default function Login({ renderState, changeRenderState }) {
 
   return (
     <div className="flex flex-col w-full justify-center">
-      <input
-        type="username"
-        placeholder="username"
-        name="username"
-        value={inputLogin.username}
-        onChange={handleChange}
-        className="input"
-      />
-      <input
-        type="password"
-        placeholder="password"
-        className="input"
-        name="password"
-        value={inputLogin.password}
-        onChange={handleChange}
-      />
+      <div className="relative">
+        <input
+          type="username"
+          placeholder="username"
+          name="username"
+          value={inputLogin.username}
+          onChange={handleChange}
+          className="input"
+        />
+        {/* <div className="absolute right-28 top-10 hidden" ref={iconRef1}>
+          <GiCheckMark color="green" />
+        </div>
+        <p className="-mt-4 text-xs text-red-500 hidden">
+          name must have @least 4 characters
+        </p> */}
+      </div>
+
+      <div className="relative">
+        <input
+          type="password"
+          placeholder="password"
+          className="input"
+          name="password"
+          value={inputLogin.password}
+          onChange={handleChange}
+        />
+        {/* <div className="absolute right-28 top-10 hidden" ref={iconRef2}>
+          <GiCheckMark color="green" />
+        </div>
+        <p className="-mt-4 text-xs text-red-500 hidden">
+          name must have @least 4 characters
+        </p> */}
+      </div>
+
+      {/*popup container */}
+      {login && (
+        <div className="w-full flex items-center justify-center bg-transparent">
+          <div className="md:w-2/4 sm:w-3/4 bg-white flex py-2 px-2 rounded-sm relative">
+            <CgSmileSad size="30px" color="yellow" />
+            <p className="mx-4">User not found</p>
+
+            <div
+              className="absolute top-0 right-0 hover:cursor-pointer hover:text-gray-600"
+              onClick={closeErrorDiv}
+            >
+              <AiOutlineClose />
+            </div>
+          </div>
+        </div>
+      )}
 
       <div className="flex items-center">
         <Button
