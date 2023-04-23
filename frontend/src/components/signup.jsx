@@ -2,6 +2,7 @@ import React, { useRef, useState } from "react";
 import Button from "./button";
 import { Link } from "react-router-dom";
 import { GiCheckMark } from "react-icons/gi";
+import axios from "axios";
 
 export default function Signup({ renderState, changeRenderState }) {
   const iconRef1 = useRef(),
@@ -82,7 +83,31 @@ export default function Signup({ renderState, changeRenderState }) {
     }
 
     if (!error.password && !error.fname && !error.mail) {
-      setTimeout(() => toggleState(), 3000);
+      const url = "http://localhost:5000/register";
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "Application/json",
+          "Accept-Control-Allow-Origin": "*",
+        },
+      };
+      axios
+        .post(
+          url,
+          {
+            fname: signup.fname,
+            email: signup.mail,
+            password: signup.password,
+          },
+          config
+        )
+        .then((data) =>
+          data.data.error
+            ? console.log("Failed") //Create Ui for this
+            : console.log(data, "user registered") //Create Ui for this
+        )
+        .catch((err) => console.log(err, "Something wrong"));
+      // setTimeout(() => toggleState(), 3000);
     }
   };
 

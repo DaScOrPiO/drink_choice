@@ -4,10 +4,11 @@ import { useNavigate, Link } from "react-router-dom";
 import { GiCheckMark } from "react-icons/gi";
 import { CgSmileSad } from "react-icons/cg";
 import { AiOutlineClose } from "react-icons/ai";
+import axios from "axios";
 
 export default function Login({ renderState, changeRenderState }) {
   const [inputLogin, setInputLogin] = useState({
-    username: "",
+    mail: "",
     password: "",
   });
 
@@ -26,7 +27,7 @@ export default function Login({ renderState, changeRenderState }) {
       return { ...prev, [name]: value };
     });
   };
-  console.log(inputLogin);
+  // console.log(inputLogin);
 
   const toggleState = (e) => {
     e.preventDefault();
@@ -35,22 +36,46 @@ export default function Login({ renderState, changeRenderState }) {
 
   const navigate = useNavigate();
   const navigateUser = (e) => {
+    // e.preventDefault();
+
+    // if (renderState) {
+    //   console.log(inputLogin);
+    // }
+    navigate("/dashboard");
+  };
+
+  const handleSubmit = (e) => {
     e.preventDefault();
 
-    if (renderState) {
-      console.log(inputLogin);
-    }
-    navigate("/dashboard");
+    const url = "http://localhost:5000/login";
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "Application/json",
+        "Accept-Control-Allow-Origin": "*",
+      },
+    };
+    axios
+      .post(
+        url,
+        {
+          email: inputLogin.mail,
+          password: inputLogin.password,
+        },
+        config
+      )
+      .then((data) => console.log(data, "logged In"))
+      .catch((err) => console.log(err, "Something wrong"));
   };
 
   return (
     <div className="flex flex-col w-full justify-center">
       <div className="relative">
         <input
-          type="username"
-          placeholder="username"
-          name="username"
-          value={inputLogin.username}
+          type="email"
+          placeholder="E-mail"
+          name="mail"
+          value={inputLogin.mail}
           onChange={handleChange}
           className="input"
         />
@@ -99,7 +124,7 @@ export default function Login({ renderState, changeRenderState }) {
       <div className="flex items-center">
         <Button
           btnText="Login"
-          click={navigateUser}
+          click={handleSubmit}
           style={{ width: "auto" }}
         />
 
