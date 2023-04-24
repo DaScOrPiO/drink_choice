@@ -25,7 +25,6 @@ const user = mongoose.model("userSignup");
 
 // Register Api
 app.post("/register", async (req, res) => {
-  console.log(req.body);
   const { fname, email, password } = req.body;
   const encryptPassword = await bcrypt.hash(password, 10); //Encrypt user password
 
@@ -40,7 +39,6 @@ app.post("/register", async (req, res) => {
       email,
       password: encryptPassword,
     });
-    console.log(fname, email, password);
     return res.send({ status: "ok" });
   } catch (error) {
     res.send({ status: "Somethin went wrong" });
@@ -72,7 +70,6 @@ app.post("/userDetails", async (req, res) => {
   try {
     const users = jwt.verify(token, _KEy);
     const userEmail = users.email;
-    console.log(user, userEmail);
     user
       .findOne({ email: userEmail })
       .then((data) => {
