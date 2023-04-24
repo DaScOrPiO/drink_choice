@@ -73,11 +73,9 @@ app.post("/userDetails", async (req, res) => {
     user
       .findOne({ email: userEmail })
       .then((data) => {
-        console.log(data);
         return res.send({ status: "ok", data: data });
       })
       .catch((error) => {
-        console.log(error);
         return res.send({ status: error, data: error });
       });
   } catch (error) {}
