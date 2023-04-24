@@ -27,7 +27,7 @@ const user = mongoose.model("userSignup");
 app.post("/register", async (req, res) => {
   console.log(req.body);
   const { fname, email, password } = req.body;
-  const encryptPassword = await bcrypt.hash(password, 10);
+  const encryptPassword = await bcrypt.hash(password, 10); //Encrypt user password
 
   const userExist = await user.findOne({ email });
 
@@ -56,7 +56,7 @@ app.post("/login", async (req, res) => {
     return res.json({ error: "no users found!" });
   }
   if (await bcrypt.compare(password, userExist.password)) {
-    const token = jwt.sign({}, _KEy);
+    const token = jwt.sign({ email: userExist.email }, _KEy);
     if (res.status(201)) {
       return res.json({ status: "ok", data: token });
     } else {
@@ -64,4 +64,24 @@ app.post("/login", async (req, res) => {
     }
   }
   res.json({ status: "error", error: "INVALID PASSWORD!" });
+});
+
+//GetDetails
+app.post("/userDetails", async (req, res) => {
+  const { token } = req.body;
+  try {
+    const users = jwt.verify(token, _KEy);
+    const userEmail = users.email;
+    console.log(user, userEmail);
+    user
+      .findOne({ email: userEmail })
+      .then((data) => {
+        console.log(data);
+        return res.send({ status: "ok", data: data });
+      })
+      .catch((error) => {
+        console.log(error);
+        return res.send({ status: error, data: error });
+      });
+  } catch (error) {}
 });

@@ -8,7 +8,7 @@ import axios from "axios";
 
 export default function Login({ renderState, changeRenderState }) {
   const [inputLogin, setInputLogin] = useState({
-    mail: "",
+    mail: "", //Form input State
     password: "",
   });
 
@@ -17,10 +17,7 @@ export default function Login({ renderState, changeRenderState }) {
     setLogin(!login);
   };
 
-  //Refrence input fiels
-  const iconRef1 = useRef(),
-    iconRef2 = useRef();
-
+  //Handle Input fields
   const handleChange = (e) => {
     const { name, value } = e.target;
     setInputLogin((prev) => {
@@ -34,19 +31,15 @@ export default function Login({ renderState, changeRenderState }) {
     changeRenderState((prev) => !prev);
   };
 
-  const navigate = useNavigate();
+  //Navigate user to dashboard
   const navigateUser = (e) => {
-    // e.preventDefault();
-
-    // if (renderState) {
-    //   console.log(inputLogin);
-    // }
-    navigate("/dashboard");
+    window.location.reload();
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
+    //Validate user on database
     const url = "http://localhost:5000/login";
     const config = {
       headers: {
@@ -64,8 +57,16 @@ export default function Login({ renderState, changeRenderState }) {
         },
         config
       )
-      .then((data) => console.log(data, "logged In"))
-      .catch((err) => console.log(err, "Something wrong"));
+      .then((data) => {
+        if (data.status === 201) {
+          window.localStorage.setItem("token", data.data.data);
+          window.localStorage.setItem("LoggedIn", true);
+          setTimeout(() => navigateUser(), 3000);
+        } else {
+          setLogin(true);
+        }
+      })
+      .catch((err) => err);
   };
 
   return (
@@ -79,12 +80,6 @@ export default function Login({ renderState, changeRenderState }) {
           onChange={handleChange}
           className="input"
         />
-        {/* <div className="absolute right-28 top-10 hidden" ref={iconRef1}>
-          <GiCheckMark color="green" />
-        </div>
-        <p className="-mt-4 text-xs text-red-500 hidden">
-          name must have @least 4 characters
-        </p> */}
       </div>
 
       <div className="relative">
@@ -96,12 +91,6 @@ export default function Login({ renderState, changeRenderState }) {
           value={inputLogin.password}
           onChange={handleChange}
         />
-        {/* <div className="absolute right-28 top-10 hidden" ref={iconRef2}>
-          <GiCheckMark color="green" />
-        </div>
-        <p className="-mt-4 text-xs text-red-500 hidden">
-          name must have @least 4 characters
-        </p> */}
       </div>
 
       {/*popup container */}
@@ -109,7 +98,7 @@ export default function Login({ renderState, changeRenderState }) {
         <div className="w-full flex items-center justify-center bg-transparent">
           <div className="md:w-2/4 sm:w-3/4 bg-white flex py-2 px-2 rounded-sm relative">
             <CgSmileSad size="30px" color="yellow" />
-            <p className="mx-4">User not found</p>
+            <p className="mx-4">Invalid mail or password</p>
 
             <div
               className="absolute top-0 right-0 hover:cursor-pointer hover:text-gray-600"

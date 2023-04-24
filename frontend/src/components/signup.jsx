@@ -3,6 +3,8 @@ import Button from "./button";
 import { Link } from "react-router-dom";
 import { GiCheckMark } from "react-icons/gi";
 import axios from "axios";
+import { BsExclamationLg } from "react-icons/bs";
+import { AiOutlineClose } from "react-icons/ai";
 
 export default function Signup({ renderState, changeRenderState }) {
   const iconRef1 = useRef(),
@@ -16,6 +18,11 @@ export default function Signup({ renderState, changeRenderState }) {
     password: "",
     passwordConfirm: "",
   });
+
+  const [err, setErr] = useState(false);
+  const closeErrorDiv = () => {
+    setErr(!err);
+  };
 
   const mailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   const handleChange = (e) => {
@@ -101,13 +108,15 @@ export default function Signup({ renderState, changeRenderState }) {
           },
           config
         )
-        .then((data) =>
-          data.data.error
-            ? console.log("Failed") //Create Ui for this
-            : console.log(data, "user registered") //Create Ui for this
-        )
-        .catch((err) => console.log(err, "Something wrong"));
-      // setTimeout(() => toggleState(), 3000);
+        .then((data) => {
+          if (data.data.error) {
+            setErr(true);
+          } else {
+            console.log(data, "user registered");
+            setTimeout(() => toggleState(), 3000);
+          }
+        })
+        .catch((err) => setErr(true));
     }
   };
 
@@ -181,6 +190,22 @@ export default function Signup({ renderState, changeRenderState }) {
           invalid password or password doesn't match
         </p>
       </div>
+
+      {err && (
+        <div className="w-full items-center flex justify-center">
+          <div className="md:w-2/4 sm:w-3/4 bg-white flex py-2 px-2 rounded-sm relative">
+            <BsExclamationLg size="30px" color="red" />
+            <p className="mx-4">user Registered or netwok error</p>
+
+            <div
+              className="absolute top-0 right-0 hover:cursor-pointer hover:text-gray-600"
+              onClick={closeErrorDiv}
+            >
+              <AiOutlineClose />
+            </div>
+          </div>
+        </div>
+      )}
 
       <div className="flex items-center mt-4">
         <Button
