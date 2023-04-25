@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from "react";
-import Item from "./item";
+import React, { useLayoutEffect, useState } from "react";
 import { ImExit } from "react-icons/im";
 import axios from "axios";
 import Animation from "./animation";
-import { useNavigate } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.min.css";
 
 export default function UserDashboard() {
   const [data, setData] = useState("");
@@ -14,6 +14,11 @@ export default function UserDashboard() {
   //View username on page
   const [renderToken, setRenderToken] = useState();
   const hour = new Date().getHours();
+  const alert = () =>
+    toast.error("Network Error", {
+      hideProgressBar: true,
+      position: "top-center",
+    });
 
   const getUserInfo = () => {
     const url = "http://localhost:5000/userDetails";
@@ -34,7 +39,6 @@ export default function UserDashboard() {
       )
       .then((data) => {
         setRenderToken(data.data.data.fname);
-        return console.log(data.data.data.fname, "userData");
       });
   };
 
@@ -51,7 +55,7 @@ export default function UserDashboard() {
   };
 
   //data Fetch from TOM API
-  useEffect(() => {
+  useLayoutEffect(() => {
     const getData = async () => {
       const url = "https://api.up2tom.com/v3/models/58d3bcf97c6b1644db73ad12";
       const config = {
@@ -67,7 +71,7 @@ export default function UserDashboard() {
         setData(modelName);
         setLoading(false);
       } catch (error) {
-        console.log(error);
+        alert();
       }
     };
     getData();
@@ -76,6 +80,7 @@ export default function UserDashboard() {
   return (
     <>
       <main className="w-full h-full user-pagebg">
+        <ToastContainer />
         <header className="w-full h-1/4 p-2 header-gradient flex flex-col justify-center items-center">
           {hour <= 11 ? (
             <h2 className="text-2xl">
@@ -119,7 +124,7 @@ export default function UserDashboard() {
         <section className="flex flex-col justify-center items-center h-3/4 w-full">
           <div className="w-full flex justify-center items-center">
             {loading ? (
-              <Animation fill="#967306" />
+              <Animation fill="#364e42" />
             ) : (
               <>
                 <input
@@ -160,9 +165,6 @@ export default function UserDashboard() {
           <h2 className="text-center text-2xl radial-text">
             &copy; Oladunni Faith
           </h2>
-          {/* <div className="md:h-3/4 sm:h-1/4 w-full flex flex-wrap justify-center">
-            <Item />
-          </div> */}
         </section>
       </main>
     </>

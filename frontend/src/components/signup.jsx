@@ -5,6 +5,7 @@ import { GiCheckMark } from "react-icons/gi";
 import axios from "axios";
 import { BsExclamationLg } from "react-icons/bs";
 import { AiOutlineClose } from "react-icons/ai";
+import { motion, AnimatePresence } from "framer-motion";
 
 export default function Signup({ renderState, changeRenderState }) {
   const iconRef1 = useRef(),
@@ -32,8 +33,10 @@ export default function Signup({ renderState, changeRenderState }) {
     });
   };
 
+  const [animateExit, setAnimateExit] = useState(false);
   const toggleState = () => {
-    changeRenderState((prev) => !prev);
+    setTimeout(() => changeRenderState((prev) => !prev), 400);
+    setAnimateExit(!animateExit);
   };
 
   //submit function
@@ -121,102 +124,112 @@ export default function Signup({ renderState, changeRenderState }) {
   };
 
   return (
-    <div className="flex flex-col">
-      <div className="relative">
-        <input
-          type="text"
-          placeholder="name"
-          className="input-1"
-          onChange={handleChange}
-          name="fname"
-          value={signup.fname}
-        />
-        <div className="check-icon hidden" ref={iconRef1}>
-          <GiCheckMark color="green" />
-        </div>
-        <p className="-mt-4 text-xs text-red-500 hidden">
-          name must have @least 4 characters
-        </p>
-      </div>
-
-      <div className="relative">
-        <input
-          type="email"
-          id=""
-          placeholder="E-mail"
-          className="input-1"
-          onChange={handleChange}
-          name="mail"
-          value={signup.mail}
-        />
-        <div className="check-icon hidden" ref={iconRef2}>
-          <GiCheckMark color="green" />
-        </div>
-        <p className="-mt-4 text-xs text-red-500 hidden">
-          invalid mail, valid mail format johndoe@mail.com
-        </p>
-      </div>
-
-      <div className="relative">
-        <input
-          type="password"
-          placeholder="Password"
-          className="input-1"
-          onChange={handleChange}
-          name="password"
-          value={signup.password}
-        />
-        <div className="check-icon hidden" ref={iconRef3}>
-          <GiCheckMark color="green" />
-        </div>
-        <p className="-mt-4 text-xs text-red-500 hidden">
-          invalid password or password doesn't match
-        </p>
-      </div>
-
-      <div className="relative">
-        <input
-          type="password"
-          placeholder="confirm Password"
-          className="input-1"
-          onChange={handleChange}
-          name="passwordConfirm"
-          value={signup.passwordConfirm}
-        />
-        <div className="check-icon hidden" ref={iconRef4}>
-          <GiCheckMark color="green" />
-        </div>
-        <p className="-mt-4 text-xs text-red-500 hidden">
-          invalid password or password doesn't match
-        </p>
-      </div>
-
-      {err && (
-        <div className="w-full items-center flex justify-center">
-          <div className="md:w-2/4 sm:w-3/4 bg-white flex py-2 px-2 rounded-sm relative">
-            <BsExclamationLg size="30px" color="red" />
-            <p className="mx-4">user Registered or netwok error</p>
-
-            <div
-              className="absolute top-0 right-0 hover:cursor-pointer hover:text-gray-600"
-              onClick={closeErrorDiv}
-            >
-              <AiOutlineClose />
+    <AnimatePresence>
+      {!animateExit && (
+        <motion.div
+          className="flex flex-col"
+          initial={{ y: "-100vh" }}
+          animate={{ y: 0 }}
+          transition={{ duration: 0.5, type: "tween" }}
+          exit={{ y: "-100vh" }}
+        >
+          <div className="relative">
+            <input
+              type="text"
+              placeholder="name"
+              className="input-1"
+              onChange={handleChange}
+              name="fname"
+              value={signup.fname}
+            />
+            <div className="check-icon hidden" ref={iconRef1}>
+              <GiCheckMark color="green" />
             </div>
+            <p className="-mt-4 text-xs text-red-500 hidden">
+              name must have @least 4 characters
+            </p>
           </div>
-        </div>
-      )}
 
-      <div className="flex items-center mt-4">
-        <Button
-          btnText="Signup"
-          click={handleSubmit}
-          style={{ width: "auto" }}
-        />
-        <Link className="mx-4 text-blue-800" onClick={toggleState}>
-          Have an account? Login now!
-        </Link>
-      </div>
-    </div>
+          <div className="relative">
+            <input
+              type="email"
+              id=""
+              placeholder="E-mail"
+              className="input-1"
+              onChange={handleChange}
+              name="mail"
+              value={signup.mail}
+            />
+            <div className="check-icon hidden" ref={iconRef2}>
+              <GiCheckMark color="green" />
+            </div>
+            <p className="-mt-4 text-xs text-red-500 hidden">
+              invalid mail, valid mail format johndoe@mail.com
+            </p>
+          </div>
+
+          <div className="relative">
+            <input
+              type="password"
+              placeholder="Password"
+              className="input-1"
+              onChange={handleChange}
+              name="password"
+              value={signup.password}
+            />
+            <div className="check-icon hidden" ref={iconRef3}>
+              <GiCheckMark color="green" />
+            </div>
+            <p className="-mt-4 text-xs text-red-500 hidden">
+              invalid password or password doesn't match
+            </p>
+          </div>
+
+          <div className="relative">
+            <input
+              type="password"
+              placeholder="confirm Password"
+              className="input-1"
+              onChange={handleChange}
+              name="passwordConfirm"
+              value={signup.passwordConfirm}
+            />
+            <div className="check-icon hidden" ref={iconRef4}>
+              <GiCheckMark color="green" />
+            </div>
+            <p className="-mt-4 text-xs text-red-500 hidden">
+              invalid password or password doesn't match
+            </p>
+          </div>
+
+          {err && (
+            <div className="w-full items-center flex justify-center">
+              <div className="md:w-2/4 sm:w-3/4 bg-white flex py-2 px-2 rounded-sm relative">
+                <BsExclamationLg size="30px" color="red" />
+                <p className="mx-4">user Registered or netwok error</p>
+
+                <div
+                  className="absolute top-0 right-0 hover:cursor-pointer hover:text-gray-600"
+                  onClick={closeErrorDiv}
+                >
+                  <AiOutlineClose />
+                </div>
+              </div>
+            </div>
+          )}
+
+          <div className="flex items-center mt-4">
+            <Button
+              btnText="Signup"
+              click={handleSubmit}
+              style={{ width: "auto" }}
+            />
+            <Link className="mx-4 text-blue-800" onClick={toggleState}>
+              Have an account? Login now!
+            </Link>
+          </div>
+        </motion.div>
+      )}
+    </AnimatePresence>
   );
 }

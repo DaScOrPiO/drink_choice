@@ -2,7 +2,7 @@ import React from "react";
 import { useState } from "react";
 import Login from "./login";
 import Signup from "./signup";
-import axios from "axios";
+import { motion } from "framer-motion";
 
 export default function Home() {
   const [RenderSignup, setRenderSignup] = useState(false);
@@ -33,7 +33,12 @@ export default function Home() {
             </form>
           </div>
         </div>
-        <div className="lg:flex w-2/5 h-full empty-container-bg rounded-lg"></div>
+        <motion.div
+          initial={{ x: "100vw" }}
+          animate={{ x: 0 }}
+          transition={{ duration: 0.5 }}
+          className="lg:flex w-2/5 h-full empty-container-bg rounded-lg"
+        ></motion.div>
       </div>
     </div>
   );

@@ -1,10 +1,10 @@
 import React, { useRef, useState } from "react";
 import Button from "./button";
-import { useNavigate, Link } from "react-router-dom";
-import { GiCheckMark } from "react-icons/gi";
+import { Link } from "react-router-dom";
 import { CgSmileSad } from "react-icons/cg";
 import { AiOutlineClose } from "react-icons/ai";
 import axios from "axios";
+import { motion, AnimatePresence } from "framer-motion";
 
 export default function Login({ renderState, changeRenderState }) {
   const [inputLogin, setInputLogin] = useState({
@@ -26,9 +26,11 @@ export default function Login({ renderState, changeRenderState }) {
   };
   // console.log(inputLogin);
 
+  const [animateExit, setAnimateExit] = useState(false);
   const toggleState = (e) => {
     e.preventDefault();
-    changeRenderState((prev) => !prev);
+    setTimeout(() => changeRenderState((prev) => !prev), 400);
+    setAnimateExit(!animateExit);
   };
 
   //Navigate user to dashboard
@@ -70,57 +72,68 @@ export default function Login({ renderState, changeRenderState }) {
   };
 
   return (
-    <div className="flex flex-col w-full justify-center">
-      <div className="relative">
-        <input
-          type="email"
-          placeholder="E-mail"
-          name="mail"
-          value={inputLogin.mail}
-          onChange={handleChange}
-          className="input"
-        />
-      </div>
-
-      <div className="relative">
-        <input
-          type="password"
-          placeholder="password"
-          className="input"
-          name="password"
-          value={inputLogin.password}
-          onChange={handleChange}
-        />
-      </div>
-
-      {/*popup container */}
-      {login && (
-        <div className="w-full flex items-center justify-center bg-transparent">
-          <div className="md:w-2/4 sm:w-3/4 bg-white flex py-2 px-2 rounded-sm relative">
-            <CgSmileSad size="30px" color="yellow" />
-            <p className="mx-4">Invalid mail or password</p>
-
-            <div
-              className="absolute top-0 right-0 hover:cursor-pointer hover:text-gray-600"
-              onClick={closeErrorDiv}
-            >
-              <AiOutlineClose />
-            </div>
+    <AnimatePresence>
+      {!animateExit && (
+        <motion.div
+          className="flex flex-col w-full justify-center"
+          initial={{ y: "100vh" }}
+          animate={{ y: 0 }}
+          transition={{ duration: 0.5, type: "tween" }}
+          exit={{ x: "-100vw" }}
+          key="div"
+        >
+          <div className="relative">
+            <input
+              type="email"
+              placeholder="E-mail"
+              name="mail"
+              value={inputLogin.mail}
+              onChange={handleChange}
+              className="input"
+            />
           </div>
-        </div>
+
+          <div className="relative">
+            <input
+              type="password"
+              placeholder="password"
+              className="input"
+              name="password"
+              value={inputLogin.password}
+              onChange={handleChange}
+            />
+          </div>
+
+          {/*popup container */}
+          {login && (
+            <div className="w-full flex items-center justify-center bg-transparent">
+              <div className="md:w-2/4 sm:w-3/4 bg-white flex py-2 px-2 rounded-sm relative">
+                <CgSmileSad size="30px" color="yellow" />
+                <p className="mx-4">Invalid mail or password</p>
+
+                <div
+                  className="absolute top-0 right-0 hover:cursor-pointer hover:text-gray-600"
+                  onClick={closeErrorDiv}
+                >
+                  <AiOutlineClose />
+                </div>
+              </div>
+            </div>
+          )}
+
+          <div className="flex items-center">
+            <Button
+              btnText="Login"
+              click={handleSubmit}
+              style={{ width: "auto" }}
+            />
+
+            <Link className="mx-4 text-blue-800" onClick={toggleState}>
+              Don't have an account? Signup
+            </Link>
+          </div>
+        </motion.div>
       )}
-
-      <div className="flex items-center">
-        <Button
-          btnText="Login"
-          click={handleSubmit}
-          style={{ width: "auto" }}
-        />
-
-        <Link className="mx-4 text-blue-800" onClick={toggleState}>
-          Don't have an account? Signup
-        </Link>
-      </div>
-    </div>
+    </AnimatePresence>
   );
 }
